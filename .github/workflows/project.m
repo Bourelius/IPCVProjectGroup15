@@ -1,21 +1,26 @@
-clear all
+clear variables;
+close all;
+
+%% Read the video
 vid = VideoReader('video1.mp4');
 
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 vid.CurrentTime = 0;
 
-
+%% Go through each frame
 %im=imread('test.jpg');
-i=1
-running=true
+i=1;
+running=true;
 while hasFrame(vid)
     frame=readFrame(vid);
-    b=rgb2gray(frame);
-    b=b>200;
-    BW=edge(b,'canny');
-    [H,T,R] = hough(BW,'Theta',-10:1:10);
+    b=rgb2gray(frame);            %bring frame to grayscale
+    b=b>200;                      %apply a threshold
+    BW=edge(b,'canny');           %edge detection of thresholded image
+    %line detection within certain orientation degrees
+    [H,T,R] = hough(BW,'Theta',-10:1:10); 
     P  = houghpeaks(H,5,'threshold',ceil(0.5*max(H(:))));
     lines = houghlines(BW,T,R,P,'MinLength',20);
+    %show the line in frame
     figure, imshow(frame), hold on
     max_len = 0;
     for k = 1:length(lines)
