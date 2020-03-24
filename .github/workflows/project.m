@@ -1,6 +1,8 @@
 clear variables;
 close all;
 
+banner = imread('../../UT_Logo_Black_EN.jpg');
+
 %% Read the video
 vid = VideoReader('../../video1.mp4');
 
@@ -65,17 +67,34 @@ goal_post(2,:) = lines(i_longest_line).point2;
 frame1 = rgb2gray(read(vid, currentTime));
 pointTracker = vision.PointTracker();
 initialize(pointTracker,goal_post,frame1);
+p_old = goal_post;
 
 %% loop through video and track points 
 while hasFrame(vid)                             % Infinite loop to continuously detect the face
     frame = readFrame(vid);
     frame = rgb2gray(frame);                    % 
     [points,validity] = pointTracker(frame);    % track the points
-%     if sum(validity)<40                         % if too many points are lost
-%         corners = detectMinEigenFeatures(rgb2gray(frame),'MinQuality',0.001); 
-%         setPoints(pointTracker,corners.Location); % set new points
-%     end
-        
+    if max(points(:,1)<(points(1,1)+50), points(:,1)>(points(1,1)-50)) % if points are not above each other anymore
+        frame_n = frame>200;
+        frame_n_edge = edge(frame_n,'canny');
+        [H,T,R] = hough(frame_n_edge,'Theta',-10:1:10);
+        P  = houghpeaks(H,5,'threshold',ceil(0.5*max(H(:))));
+        lines = houghlines(frame_n_edge,T,R,P,'MinLength',20);
+        for i = 1:length(lines)
+            lines_length(i) = norm(lines(i).point1 - lines(i).point2);
+        end
+        i_longest_line = find(max(lines_length));
+        points(1,:) = lines(i_longest_line).point1; 
+        points(2,:) = lines(i_longest_line).point2;
+        setPoints(pointTracker,points); % set new points
+    end
+    p_new  = points;   
+    
+    %estimate geometric transform
+%     tform = estimateGeometricTransform(p_old,p_new,'similarity');
+%     banner_warp = imwarp(banner, tform);
+%     imshow(banner_warp, []);
     out = insertMarker(frame,points(validity, :),'s', 'Size', 30);
     videoPlayer(out);
+    p_old = points;
 end
