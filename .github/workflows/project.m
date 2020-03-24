@@ -3,7 +3,7 @@ close all;
 
 %% Read the video
 vid = VideoReader('../../video1.mp4');
-
+output = VideoWriter('../../out.mp4','MPEG-4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 vid.CurrentTime = 0;
 
@@ -65,7 +65,7 @@ goal_post(2,:) = lines(i_longest_line).point2;
 frame1 = rgb2gray(read(vid, currentTime));
 pointTracker = vision.PointTracker();
 initialize(pointTracker,goal_post,frame1);
-
+open(output)
 %% loop through video and track points 
 while hasFrame(vid)                             % Infinite loop to continuously detect the face
     frame = readFrame(vid);
@@ -77,5 +77,8 @@ while hasFrame(vid)                             % Infinite loop to continuously 
 %     end
         
     out = insertMarker(frame,points(validity, :),'s', 'Size', 30);
-    videoPlayer(out);
+    
+    writeVideo(output,out);
+    %videoPlayer(out);
 end
+close(output)
