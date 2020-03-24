@@ -51,3 +51,10 @@ for i = 1:1:length(corrPeaks)
     drawnow
     end
 end
+
+%% 
+
+corners1 = myTemplateMatcher(im,cornerTemplate);
+corners2 = myTemplateMatcher(im,cornerCrossingTemplate);
+corners = [corners1; corners2];
+
