@@ -4,10 +4,10 @@ close all;
 banner = imread('../../UT_Logo_Black_EN.jpg');
 
 %% Read the video
-vid = VideoReader('../../video1.mp4');
+vid = VideoReader('../../video4.mp4');
 output = VideoWriter('../../out.mp4','MPEG-4');
-videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
-vid.CurrentTime = 0;
+videoPlayer = vision.VideoPlayer();
+vid.CurrentTime = 5;
 
 %% Go through each frame and determine the goal post lines for each frame
 %im=imread('test.jpg');
@@ -46,7 +46,6 @@ vid.CurrentTime = 0;
 % end
 
 %% initialize points of goal post of first frame
-currentTime = 1;
 frame1 = read(vid, currentTime); 
 frame1 = rgb2gray(frame1);
 frame1 = frame1>200;
@@ -135,8 +134,10 @@ while hasFrame(vid)                             % Infinite loop to continuously 
 %     imshow(banner_warp, []);
     
     %insert markers and play
-    out = insertMarker(frame,points(validity, :),'s', 'Size', 10);
-    videoPlayer(out);
+    out = insertMarker(frame,points(validity, :),'x', 'Size', 10);
+%     videoPlayer(out);
+    step(videoPlayer, out);
     p_old = points;
 end
 
+release(videoPlayer);
