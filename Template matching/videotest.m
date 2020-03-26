@@ -1,6 +1,6 @@
 clear all;
 
-vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video5.mp4');
+vid = VideoReader('../video1.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 %% initialize
 vid.CurrentTime = 0;                                   % Starts capturing video
