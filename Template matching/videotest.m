@@ -1,9 +1,9 @@
 clear all;
 
-vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video5.mp4');
+vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 %% initialize
-vid.CurrentTime = 0;                                   % Starts capturing video
+vid.CurrentTime = 5;                                   % Starts capturing video
 frame = readFrame(vid);
 frame = rgb2gray(frame);
 cornerCrossingTemplate = imread('cropedLineCrossing.png');
