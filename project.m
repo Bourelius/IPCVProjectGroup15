@@ -31,6 +31,7 @@ corners = [corners1; corners2];
 %% create pointTracker and initialize
 
 pointTracker = vision.PointTracker();
+%p_old = goal_posts_points;
 p_old = [goal_posts_points; corners.Location];
 initialize(pointTracker,p_old,frame1);
 
@@ -42,26 +43,43 @@ while hasFrame(vid)                             % Infinite loop to continuously 
     frame = readFrame(vid);
     frame = rgb2gray(frame);                    % 
     [points,validity] = pointTracker(frame);    % track the points
-    if max(points(2,1)<(points(1,1)+10), points(2,1)>(points(1,1)-10)) % if points are not above each other anymore
-        goal_posts_points = goalPostDetector(frame);
-    end
-    %if sum(validity)<5                   % if too many points are lost
+    if sum(validity)<5 
+        
+        if max(points(2,1)<(points(1,1)+10), points(2,1)>(points(1,1)-10)) % if points are not above each other anymore
+            if norm(points(1) - points(2)) <120
+                goal_posts_points = goalPostDetector(frame);
+            end
+        end
+                      % if too many points are lost
         corners1 = myTemplateMatcher(frame,cornerTemplate);
         corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
         corners = [corners1; corners2]; 
-    %end
-    points = [goal_posts_points; corners.Location];
-    setPoints(pointTracker,points); % set new points
+        
+        points = [goal_posts_points; corners.Location];
+        setPoints(pointTracker,points); % set new points
+    end
     p_new  = points;   
     
-    %estimate geometric transform
+    %estimate geometric transform, first check if points matched to each
+    %other correctly
+%     if size(p_new) < size(p_old)
+%         for i = 1:1:size(validity)
+%             if validity(i) == 0         % lost the point
+%                 p_
+%             end
+%         end
+%     elseif size(p_new) > size(p_old)
+%         
+%     end
+    
+    
 %     tform_new = estimateGeometricTransform(p_old,p_new,'projective');
 %     tform.T = tform_new.T * tform.T; 
 %     banner_warp = imwarp(banner, tform);
 %     imshow(banner_warp, []);
     
     %insert markers and play
-    out = insertMarker(frame,points(validity, :),'x', 'Size', 10);
+    out = insertMarker(frame,points(validity, :),'s', 'Size', 10);
     step(videoPlayer, out);
     p_old = points;
 end
