@@ -36,43 +36,31 @@ p_old = [goal_posts_points; corners.Location];
 initialize(pointTracker,p_old,frame1);
 
 %% initial tform
-tform = projective2d();
+% tform = projective2d();
 
 %% loop through video and track points 
 while hasFrame(vid)                             % Infinite loop to continuously detect the face
     frame = readFrame(vid);
     frame = rgb2gray(frame);                    % 
     [points,validity] = pointTracker(frame);    % track the points
-    if sum(validity)<5 
+    if sum(validity)<5 %if we lose some points
         
         if max(points(2,1)<(points(1,1)+10), points(2,1)>(points(1,1)-10)) % if points are not above each other anymore
             if norm(points(1) - points(2)) <120
                 goal_posts_points = goalPostDetector(frame);
             end
         end
-                      % if too many points are lost
+                    
         corners1 = myTemplateMatcher(frame,cornerTemplate);
         corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
         corners = [corners1; corners2]; 
         
         points = [goal_posts_points; corners.Location];
-        setPoints(pointTracker,points); % set new points
+        setPoints(pointTracker,points); % set new points ONLY HERE NOT OUTSIDE OF THE VALIDITY CHECK
     end
-    p_new  = points;   
+%     p_new  = points;   
     
-    %estimate geometric transform, first check if points matched to each
-    %other correctly
-%     if size(p_new) < size(p_old)
-%         for i = 1:1:size(validity)
-%             if validity(i) == 0         % lost the point
-%                 p_
-%             end
-%         end
-%     elseif size(p_new) > size(p_old)
-%         
-%     end
-    
-    
+    %estimate geometric transform   
 %     tform_new = estimateGeometricTransform(p_old,p_new,'projective');
 %     tform.T = tform_new.T * tform.T; 
 %     banner_warp = imwarp(banner, tform);
@@ -81,7 +69,7 @@ while hasFrame(vid)                             % Infinite loop to continuously 
     %insert markers and play
     out = insertMarker(frame,points(validity, :),'s', 'Size', 10);
     step(videoPlayer, out);
-    p_old = points;
+%     p_old = points;
 end
 
 release(videoPlayer);
