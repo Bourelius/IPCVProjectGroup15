@@ -73,56 +73,16 @@ imagePoints(4,:) = corners.Location(6,:);
 
 
 %tformBannerToWorld = estimateGeometricTransform(bannerPoints,worldPoints,'projective');
-tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
+tformBannerToImage= estimateGeometricTransform(bannerPoints,imagePoints,'projective');
 warpedBannerToImage = imwarp(bannerImGray,tformBannerToImage);
 figure;
 imshow(warpedBannerToImage);
 
-% figure
-% C = imfuse(frame,warpedBannerToImage,'blend');
-% imshow(C);
+figure
+C = i
 
 
-%% Part 1
-% %Make tform object with corresponding points between 1 and 2
-% tformBannerToImage = estimateGeometricTransform(p{2,1},p{1,2},'projective');
-% %Warp bannerImGray towards domain of frame
-% bannerImGraywarp = imwarp(bannerImGray,tformBannerToImage);
-% %imshow(bannerImGraywarp);
-% imwrite(bannerImGraywarp,'bannerImGraywarp.jpg');
 
-%Make tform1 object with identity transformation
-tform1 = projective2d(eye(3));
-
-%Find WorldLimits
-sizeframe = size(frame);
-sizebannerImGray = size(bannerImGray);
-[xlims(1,:), ylims(1,:)] = outputLimits(tform1,[1 sizeframe(1)],[1 sizeframe(2)]);
-[xlims(2,:), ylims(2,:)] = outputLimits(tformBannerToImage,[1 sizebannerImGray(1)],[1 sizebannerImGray(2)]);
-xMin = min(xlims(:));
-yMin = min(ylims(:));
-xMax = max(xlims(:));
-yMax = max(ylims(:));
-width = round(xMax - xMin);
-height = round(yMax - yMin);
-imageSize = [height width];
-xWorldLimits = [xMin xMax];
-yWorldLimits = [yMin yMax];
-
-%Creat imref object
-imref = imref2d(imageSize, xWorldLimits, yWorldLimits);
-%Make blender object
-blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port'); 
-
-%Warp images
-warpedImage1 = imwarp(frame, tform1, 'Outputview',imref);
-warpedImage2 = imwarp(bannerImGray, tformBannerToImage, 'Outputview',imref);
-
-%Merge images
-mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
-mergedImages = step(blender, warpedImage1, warpedImage2,mask);
-
-imshow(mergedImages);
 
 
 

@@ -1,11 +1,11 @@
 close all;
 clear all; 
 
-vid = VideoReader('clip.mp4');
+vid = VideoReader('../video4.mp4');
 
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 %% Load frame
-vid.CurrentTime = 275;
+vid.CurrentTime = 5;
 frame = readFrame(vid);
 im = im2double(frame);
 im = rgb2gray(im);
@@ -15,12 +15,13 @@ imshow(im);
 % imwrite(I,'cropedCorner.png');
 cornerCrossingTemplate = imread('cropedLineCrossing.png');
 cornerTemplate = imread('cropedCorner.png');
+oppositeCornerTemplate = imread('oppositeCorner.png');
 templateSize = size(cornerTemplate);
 height = templateSize(2);
 width = templateSize(1);
 
 %%
-correlationOutput = normxcorr2(cornerTemplate,im);
+correlationOutput = normxcorr2(oppositeCornerTemplate,im);
 figure;
 imshow(correlationOutput);
 
