@@ -1,0 +1,95 @@
+clear all;
+
+vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
+videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
+%% frame 1
+vid.CurrentTime = 5;                                   % Starts capturing video
+frame = readFrame(vid);
+frame = rgb2gray(frame);
+cornerCrossingTemplate = imread('cropedLineCrossing.png');
+cornerTemplate = imread('cropedCorner.png');
+oppositeCornerTemplate = imread('oppositeCorner.png');
+
+corners1 = myTemplateMatcher(frame,cornerTemplate);
+corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
+corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);
+cornersFrame1 = [corners1; corners2; corners3]; 
+
+figure;
+imshow(frame); hold on;
+out = insertMarker(frame,cornersFrame1.Location,'x'); 
+imshow(out);
+
+%% frame 2
+vid.CurrentTime = 5.5;                                   % Starts capturing video
+frame = readFrame(vid);
+frame = rgb2gray(frame);
+cornerCrossingTemplate = imread('cropedLineCrossing.png');
+cornerTemplate = imread('cropedCorner.png');
+oppositeCornerTemplate = imread('oppositeCorner.png');
+
+corners1 = myTemplateMatcher(frame,cornerTemplate);
+corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
+corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);
+cornersFrame2 = [corners1; corners2; corners3]; 
+
+figure;
+imshow(frame); hold on;
+out = insertMarker(frame,cornersFrame2.Location,'x'); 
+imshow(out);
+
+%%
+
+
+worldPoints = [358.3, 0;
+               248.4, 160;
+               541.6, 0;
+               358.4, 0;
+               651.6, 0; 
+               541.6, 55];
+imagePointsFrame1 = double(cornersFrame1.Location);
+imagePointsFrame2 = double(cornersFrame2.Location);
+imagePoints = cat(3,imagePointsFrame1, imagePointsFrame2);
+%[cameraParams,imagesUsed,estimationErrors] = ... 
+ %   estimateCameraParameters(imagePoints,worldPoints);
+%cameraMatrix = estimateCameraMatrix(imagePoints,worldPoints);
+
+%tformImageToWorld = estimateGeometricTransform(imagePoints,worldPoints,'projective');
+
+%%
+[bannerIm,map,alpha] = imread('C:\Users\Gebruiker\Pictures\banner00.jpg');
+bannerImGray = rgb2gray(bannerIm);
+bannerPoints = [0,0;
+                1299,0;
+                0,178;
+                1299,178];
+
+imagePoints = zeros(4,2);
+corners = cornersFrame1;
+imagePoints(1,:) = corners.Location(4,:);
+imagePoints(2,:) = corners.Location(3,:);          
+imagePoints(3,:) = corners.Location(1,:);           
+imagePoints(4,:) = corners.Location(6,:);
+
+
+%tformBannerToWorld = estimateGeometricTransform(bannerPoints,worldPoints,'projective');
+tformBannerToImage= estimateGeometricTransform(bannerPoints,imagePoints,'projective');
+warpedBannerToImage = imwarp(bannerImGray,tformBannerToImage);
+figure;
+imshow(warpedBannerToImage);
+
+figure
+C = i
+
+
+
+
+
+
+
+
+
+
+
+
+
