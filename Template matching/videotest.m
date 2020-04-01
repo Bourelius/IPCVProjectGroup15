@@ -1,4 +1,5 @@
 clear all;
+close all;
 
 vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,1020,680],'Name','Point tracker');
@@ -39,7 +40,7 @@ while running
     
     out = insertMarker(frame,points(validity, :),'+');
     videoPlayer(out);      % Empty the memory buffer that stored acquired frames
-    if vid.Currenttime == 9
+    if vid.Currenttime == 30
          running = false;
     end
 end
