@@ -70,9 +70,7 @@ while hasFrame(vid)
        xy = [lines_pole(i).point1; lines_pole(i).point2];
        plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
        m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));
-       c=xy(2,2)-m*xy(2,1)
-       %plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
-       
+       c=
        %lines_length(i) = norm(lines(i).point1 - lines(i).point2);
        temp(i)=sqrt(xy(2,1)^2+xy(2,2)^2);
        pts(2*i-1,:)=xy(1,:);
@@ -102,12 +100,9 @@ while hasFrame(vid)
             if sqrt(xy(2,1)^2+xy(2,2)^2)>pole_rho+10
             plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
             %lines_length(i) = norm(lines(i).point1 - lines(i).point2);
-            m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));
-            c=xy(2,2)-m*xy(2,1);
-            plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
+            
             end
         end
-
 %         i_longest_line = find(max(lines_length)); 
 %         % consider goal post to be longest line detected and other goal post to be
 %         % +- 20 px tbd
@@ -119,6 +114,7 @@ while hasFrame(vid)
 %     frame1 = rgb2gray(read(vid, currentTime));
 %     pointTracker = vision.PointTracker();
 %     initialize(pointTracker,pts,frame1);
+%     p_old = pts;
 
 end
 % loop through video and track points 
