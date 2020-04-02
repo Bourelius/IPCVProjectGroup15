@@ -55,8 +55,8 @@ while hasFrame(vid)
     theta=[-10:1:5;-85:1:-70;65:1:80];
     %% Extracting Poles
     frame = readFrame(vid); 
-    frame_gray = rgb2gray(frame);
-    frame_pole = frame_gray>200;
+    frame_gray = rgb2gray(myColourFilter(frame));
+    frame_pole = frame_gray>130;
     frame_pole_edge = edge(frame_pole,'canny');
     
     [H,T,R] = hough(frame_pole_edge,'Theta',theta(1,:));
@@ -89,6 +89,9 @@ while hasFrame(vid)
     se=strel('diamond',1);
     frame_lines=imerode(frame_lines,se);
     %frame1 = frame1>240;
+    frame_lines = readFrame(vid); 
+    frame_gray = rgb2gray(myColourFilter(frame));
+    frame_pole = frame_gray>130;
     frame_lines_edge = edge(frame_lines,'canny');
     a=zeros(10,1)
     t=1;
