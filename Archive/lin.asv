@@ -67,20 +67,25 @@ while hasFrame(vid)
        c=xy(2,2)-m*xy(2,1);             
        plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
     end
-    ints=zeros(length(lines),length(lines2),2);
+    ints=zeros(length(lines)*length(lines2),2);
+    i=1
     for k=1:length(lines)
         for j=1:length(lines2)
-            lin1=[lines(k).point1,lines(k).point2];
-            lin2=[lines2(j).point1,lines2(j).point2];
+            lin1=[lines(k).point1;lines(k).point2];
+            lin2=[lines2(j).point1;lines2(j).point2];
             m1=(lin1(2,2)-lin1(1,2))/(lin1(2,1)-lin1(1,1)); 
             m2=(lin2(2,2)-lin2(1,2))/(lin2(2,1)-lin2(1,1)); 
             c1=lin1(2,2)-m1*lin1(2,1);
             c2=lin2(2,2)-m2*lin2(2,1);
             x=(c2-c1)/(m1-m2);
             y=m1*x+c1;
-            %ints(i,j,:)=[x,y];
-            plot(x,y,100, 'r+', 'MarkerSize', 5, 'LineWidth', 2);
+            ints(i,:)=[x,y];
+            plot(x,y, 'x', 'MarkerSize', 10, 'LineWidth', 2,'Color','yellow');
+            i=i+1;
         end
     end
+    sorted=sortrows(ints,2)
+    corners=sprt
+    out=myInsertBannerInFrame(
  break  
 end

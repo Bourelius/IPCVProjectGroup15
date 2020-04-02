@@ -16,9 +16,9 @@ vid.CurrentTime = 4;
 %% Loop through video
 
 while hasFrame(vid)
-   frame = readFrame(vid);
+   frame1 = readFrame(vid);
    
-    lab_frame = rgb2lab(frame);
+    lab_frame = rgb2lab(frame1);
 
     ab = lab_frame(:,:,2:3);
     ab = im2single(ab);
@@ -28,7 +28,7 @@ while hasFrame(vid)
 
     % dominant segment = largest segment = cluster1
     mask1 = pixel_labels==1;
-    frame = frame .* uint8(mask1);
+    frame = frame1 .* uint8(mask1);
    
    frame = rgb2gray(frame);
    frame = frame > 130;
@@ -84,5 +84,16 @@ while hasFrame(vid)
             i=i+1;
         end
     end
+    sorted=sortrows(ints,2);
+    corners=[sorted(1,:);sorted(2,:);sorted(4,:);sorted(5,:)];
+    out=myInsertBannerInFrame(corners,frame1);
+        bannerPoints = [0,0;
+                    0,size(banner,2)
+                    size(banner,1),0;
+                    size(banner,1),size(banner,2)];
+    %tform=estimateGeometricTransform(corners,bannerPoints,'projective');
+    %out=imwarp(banner,tform);
+    figure(10)
+    imshow(out)
  break  
 end
