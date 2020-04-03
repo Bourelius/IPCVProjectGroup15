@@ -1,10 +1,10 @@
-  clear all;
+clear all;
 close all;
 
-vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
+vid = VideoReader('..\video4.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,1020,680],'Name','Point tracker');
 %% initialize
-vid.CurrentTime = 5;                                   % Starts capturing video
+vid.CurrentTime = 7;                                   % Starts capturing video
 frame = readFrame(vid);
 frame = rgb2gray(frame);
 cornerCrossingTemplate = imread('cropedLineCrossing.png');
@@ -33,14 +33,15 @@ while running
         corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);
         corners = [corners1; corners2; corners3]; 
         setPoints(pointTracker,corners.Location); % set new points
+        %out = myInsertBannerInFrame(corners,frame,validity);
     else
-        pause(0.04166);
+        %pause(0.04166);
         
     end
     
-    out = myInsertBannerInFrame(points,frame);
+    out = myInsertBannerInFrame(points,frame,validity);
     videoPlayer(out);      % Empty the memory buffer that stored acquired frames
-    if vid.Currenttime == 30
+    if vid.Currenttime == 15
          running = false;
     end
 end
