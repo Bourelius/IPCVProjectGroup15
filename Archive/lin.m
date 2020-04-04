@@ -5,7 +5,7 @@ addpath('./Template matching/');
 addpath('./Videos/');
 addpath('./Preprocessing/');
 
-banner = imread('../UT_Logo_Black_EN.jpg');
+bannerIm = imread('../UT_Logo_Black_EN.jpg');
 
 %% Read the video
 vid = VideoReader('../real_liverpool_1.mp4');
@@ -68,7 +68,7 @@ while hasFrame(vid)
        plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
     end
     ints=zeros(length(lines)*length(lines2),2);
-    i=1
+    i=1;
     for k=1:length(lines)
         for j=1:length(lines2)
             lin1=[lines(k).point1;lines(k).point2];
@@ -88,11 +88,11 @@ while hasFrame(vid)
     corners=[sorted(1,:);sorted(2,:);sorted(4,:);sorted(5,:)];
     out=myInsertBannerInFrame(corners,frame1);
         bannerPoints = [0,0;
-                    0,size(banner,2)
-                    size(banner,1),0;
-                    size(banner,1),size(banner,2)];
+                    0,size(bannerIm,1)
+                    size(bannerIm,2),0;
+                    size(bannerIm,2),size(bannerIm,1)];
     %tform=estimateGeometricTransform(corners,bannerPoints,'projective');
-    %out=imwarp(banner,tform);
+    %out=imwarp(bannerIm,tform);
     figure(10)
     imshow(out)
  break  

@@ -12,5 +12,7 @@ function [cluster1] = myColourFilter(frame)
     % dominant segment = largest segment = cluster1
     mask1 = pixel_labels==1;
     cluster1 = frame .* uint8(mask1);
+%     frame_ycbcr = rgb2ycbcr(frame);
+    
 end
 
