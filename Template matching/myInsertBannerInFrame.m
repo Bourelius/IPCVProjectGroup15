@@ -1,27 +1,56 @@
-function out = myInsertBannerInFrame(corners,frame1)
-    bannerIm = imread('C:\Users\Gebruiker\Pictures\banner00.jpg');
+function out = myInsertBannerInFrame(corners,frame1,validity)
+    bannerIm = imread('C:\Users\Gebruiker\Pictures\selfie.jpg');
     bannerImGray = rgb2gray(bannerIm);
     worldPoints = [541.6, 0;
                541.6, 55;
                358.4, 0;
                358.4, 55];
-    bannerPoints = [1299,0;
-                    1299,178
-                    0,0;
-                    0,178];
-    bannerLocationWorld = [ 658.4, -55;
-                            658.4,0;
-                            548.4, -55;
-                            548.4, 0 ];
-
-    imagePoints = zeros(4,2);
-    sortedCorners = sortrows(corners,2);
-    imagePoints(1,:) = sortedCorners(2,:);
-    imagePoints(2,:) = sortedCorners(3,:);  
-    imagePoints(3,:) = sortedCorners(4,:);          
-    imagePoints(4,:) = sortedCorners(5,:);
+%     bannerPoints = [1299,0;
+%                     1299,178
+%                     0,0;
+%                     0,178];
+    bannerPoints = [3456,0; 3456,4608; 0,0; 0,4608];
+    bannerLocationWorld = [ 558.4, -35;
+                            558.4,0;
+                            448.4, -35;
+                            448.4, 0 ];
     
-    tformWorldToImage = estimateGeometricTransform(worldPoints,imagePoints,'projective');
+    imagePoints = zeros(4,2);
+    [sortedCorners,indexes] = sortrows(corners,2);
+    
+    if validity(indexes(4)) == 0
+        worldPoints = [541.6, 0;
+              651.6, 0;
+               358.4, 0;
+               358.4, 55];
+        imagePoints(1,:) = sortedCorners(2,:);
+        imagePoints(2,:) = sortedCorners(3,:);  
+        imagePoints(3,:) = sortedCorners(1,:);          
+        imagePoints(4,:) = sortedCorners(5,:);
+    else
+        imagePoints(1,:) = sortedCorners(2,:);
+        imagePoints(2,:) = sortedCorners(3,:);  
+        imagePoints(3,:) = sortedCorners(4,:);          
+        imagePoints(4,:) = sortedCorners(5,:);
+    end
+    
+     if validity(indexes(5)) == 0
+        worldPoints = [541.6, 0;
+                       541.6, 55;
+                       358.4, 0;
+                       651.6, 0];
+        imagePoints(1,:) = sortedCorners(2,:);
+        imagePoints(2,:) = sortedCorners(3,:);  
+        imagePoints(3,:) = sortedCorners(4,:);          
+        imagePoints(4,:) = sortedCorners(1,:);
+    else
+        imagePoints(1,:) = sortedCorners(2,:);
+        imagePoints(2,:) = sortedCorners(3,:);  
+        imagePoints(3,:) = sortedCorners(4,:);          
+        imagePoints(4,:) = sortedCorners(5,:);
+    end
+    
+    [tformWorldToImage,~,~,status] = estimateGeometricTransform(worldPoints,imagePoints,'projective');
     bannerLocationImage = transformPointsForward(tformWorldToImage,bannerLocationWorld);
     
     imagePoints(1,:) = bannerLocationImage(1,:);
