@@ -1,8 +1,6 @@
 clear all;
-<<<<<<< HEAD
-
-vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
-videoPlayer = vision.VideoPlayer('Position',[100,100,1020,680],'Name','Point tracker');
+vid = VideoReader('C:\Users\varda\Documents\GitHub\IPCVProjectGroup15\video4.mp4');
+videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 %% initialize
 vid.CurrentTime = 5;                                   % Starts capturing video
 frame = readFrame(vid);
@@ -45,10 +43,8 @@ while running
     end
 end
 
-=======
 clear all;
 =======
->>>>>>> refs/remotes/origin/master
 close all;
 
 vid = VideoReader('C:\Users\Gebruiker\git\IPCVProjectGroup15\video4.mp4');
@@ -95,8 +91,3 @@ while running
     end
 end
 
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
-delete(vid);
