@@ -8,10 +8,10 @@ addpath('./Preprocessing/');
 banner = imread('../UT_Logo_Black_EN.jpg');
 
 %% Read the video
-vid = VideoReader('../Videos/real_liverpool_2.mp4');
+vid = VideoReader('../Videos/real_liverpool_1.mp4');
 output = VideoWriter('out.mp4','MPEG-4');
 videoPlayer = vision.VideoPlayer();
-vid.CurrentTime = 1;
+vid.CurrentTime = 4;
 
 %% Loop through video
 
@@ -47,6 +47,8 @@ while hasFrame(vid)
     [H2,T2,R2] = hough(im, 'Theta', -80:1:-65);
     P2  = houghpeaks(H2,5,'threshold',ceil(0.5*max(H2(:))));
     lines2 = houghlines(im,T2,R2,P2,'FillGap', 20, 'MinLength',220);
+    [a,i]=unique([lines2.theta]','rows');
+    lines2=lines2(i);
     figure(1);imshow(im), hold on
     %lines3=[lines2(1);lines2(7);lines2(8)];
     %lines3=lines3';
@@ -68,7 +70,7 @@ while hasFrame(vid)
        plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
     end
     ints=zeros(length(lines)*length(lines2),2);
-    i=1
+    i=1;
     for k=1:length(lines)
         for j=1:length(lines2)
             lin1=[lines(k).point1;lines(k).point2];

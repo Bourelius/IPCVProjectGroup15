@@ -9,10 +9,10 @@ function out = myInsertBanner(corners,frame1)
                     0,size(bannerIm,1)
                     size(bannerIm,2),0;
                     size(bannerIm,2),size(bannerIm,1)];
-    bannerLocationWorld = [0, 0;
-               0, 360;
+    bannerLocationWorld = [550, -200;
                550, 0;
-               550, 360];
+               1000, -200;
+               1000, 0];
 
     imagePoints = zeros(4,2);
     %sortedCorners = sortrows(corners,2);

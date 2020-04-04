@@ -2,9 +2,9 @@ clear all;
 close all;
 
 vid = VideoReader('..\Videos\real_liverpool_1.mp4');
-videoPlayer = vision.VideoPlayer();
+videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 %% initialize
-vid.CurrentTime = 0;                                   % Starts capturing video
+vid.CurrentTime = 2;                                   % Starts capturing video
 frame = readFrame(vid);
 % framegray = rgb2gray(frame);
 % frameThresholded = framegray > 130;
@@ -27,11 +27,11 @@ initialize(pointTracker,corners,frame);% initialize with the initial frame
 running = true;
 while running
     frame = readFrame(vid);
-    framegray = rgb2gray(frame);
-    frameThresholded = framegray > 130;
-    framegray = double(frameThresholded);
+%     framegray = rgb2gray(frame);
+%     frameThresholded = framegray > 130;
+%     framegray = double(frameThresholded);
     [points,validity] = pointTracker(frame); % read new frame
-    if sum(validity)<10                      % if too many points are lost
+    if sum(validity)<3                      % if too many points are lost
 %         corners1 = myTemplateMatcher(frame,cornerTemplate);
 %         corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
 %         corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);

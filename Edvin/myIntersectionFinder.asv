@@ -29,6 +29,9 @@ function out = myIntersectionFinder(frame1)
     [H2,T2,R2] = hough(im, 'Theta', -85:1:-70);
     P2  = houghpeaks(H2,5,'threshold',ceil(0.7*max(H2(:))));
     lines2 = houghlines(im,T2,R2,P2,'FillGap', 50, 'MinLength',220);
+    [H3,T3,R3] = hough(im, 'Theta', -10:1:10);
+    P3  = houghpeaks(H3,5,'threshold',ceil(0.7*max(H2(:))));
+    lines2 = houghlines(im,T2,R2,P2,'FillGap', 50, 'MinLength',220);
     %figure(1);imshow(im), hold on
     %lines3=[lines2(1);lines2(7);lines2(8)];
     %lines3=lines3';
