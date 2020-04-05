@@ -13,10 +13,7 @@ function out = myInsertBanner(corners,frame1, theta)
                550, 0;
                1000, -200;
                1000, 0];
-           
-    %P1 and P3 are the points that have to be recalculated for 60°
-%     bannerLocationWorld(1,:) = myAnglePointCalculator(theta, bannerLocationWorld(2,:), bannerLocationWorld(1,:));
-%     bannerLocationWorld(3,:) = myAnglePointCalculator(theta, bannerLocationWorld(4,:), bannerLocationWorld(3,:));
+         
 
     imagePoints = zeros(4,2);
     %sortedCorners = sortrows(corners,2);
@@ -32,11 +29,12 @@ function out = myInsertBanner(corners,frame1, theta)
     imagePoints(2,:) = bannerLocationImage(2,:);
     imagePoints(3,:) = bannerLocationImage(3,:);         
     imagePoints(4,:) = bannerLocationImage(4,:);
-    
+    %P1 and P3 are the points that have to be recalculated for 60°
     imagePoints(1,:) = myAnglePointCalculator(theta, imagePoints(2,:), imagePoints(1,:));
     imagePoints(3,:) = myAnglePointCalculator(theta, imagePoints(4,:), imagePoints(3,:));
     
     tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
+    tformShadow = estimateGeometricTransform(bannerPoints,bannerLocationImage,'projective');
     
     imref = imref2d(size(frame1));
     %Make blender object
@@ -47,6 +45,9 @@ function out = myInsertBanner(corners,frame1, theta)
 %     imshow(warpedImage2)
     %Merge images
     mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
-    mergedImages = step(blender,rgb2gray(frame1), warpedImage2, mask);
+    maskShadow = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformShadow,'OutputView',imref);
+    maskShadow = not(maskShadow);
+    background = rgb2gray(frame1) .* uint8(maskShadow);
+    mergedImages = step(blender,background, warpedImage2, mask);
     out = mergedImages;
 end
