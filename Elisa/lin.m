@@ -88,7 +88,7 @@ while hasFrame(vid)
     end
     sorted=sortrows(ints,2);
     corners=[sorted(1,:);sorted(2,:);sorted(4,:);sorted(5,:)];
-    out=myInsertBanner(corners,frame1);
+    out=myInsertBanner(corners,frame1, lines(1).theta);
         bannerPoints = [0,0;
                     0,size(banner,2)
                     size(banner,1),0;

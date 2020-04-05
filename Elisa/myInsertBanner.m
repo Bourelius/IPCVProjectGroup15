@@ -1,4 +1,4 @@
-function out = myInsertBanner(corners,frame1)
+function out = myInsertBanner(corners,frame1, theta)
     bannerIm = imread('..\UT_Logo_Black_EN.jpg');
     bannerImGray = rgb2gray(bannerIm);
     worldPoints = [0, 0;
@@ -13,6 +13,10 @@ function out = myInsertBanner(corners,frame1)
                550, 0;
                1000, -200;
                1000, 0];
+           
+    %P1 and P3 are the points that have to be recalculated for 60°
+%     bannerLocationWorld(1,:) = myAnglePointCalculator(theta, bannerLocationWorld(2,:), bannerLocationWorld(1,:));
+%     bannerLocationWorld(3,:) = myAnglePointCalculator(theta, bannerLocationWorld(4,:), bannerLocationWorld(3,:));
 
     imagePoints = zeros(4,2);
     %sortedCorners = sortrows(corners,2);
@@ -28,6 +32,9 @@ function out = myInsertBanner(corners,frame1)
     imagePoints(2,:) = bannerLocationImage(2,:);
     imagePoints(3,:) = bannerLocationImage(3,:);         
     imagePoints(4,:) = bannerLocationImage(4,:);
+    
+    imagePoints(1,:) = myAnglePointCalculator(theta, imagePoints(2,:), imagePoints(1,:));
+    imagePoints(3,:) = myAnglePointCalculator(theta, imagePoints(4,:), imagePoints(3,:));
     
     tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
     
