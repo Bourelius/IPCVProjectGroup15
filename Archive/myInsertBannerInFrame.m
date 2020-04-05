@@ -6,13 +6,13 @@ function out = myInsertBannerInFrame(corners,frame1)
                550, 0;
                550, 360];
     bannerPoints = [0,0;
-                    0,size(bannerIm,2)
-                    size(bannerIm,1),0;
-                    size(bannerIm,1),size(bannerIm,2)];
-    bannerLocationWorld = [0, 0;
-               0, 360;
-               550, 0;
-               550, 360];
+                    0,size(bannerIm,1);
+                    size(bannerIm,2),0;
+                    size(bannerIm,2),size(bannerIm,1)];
+    bannerLocationWorld = [[0, 0];
+               [0, 360];
+               [550, 0];
+               [550, 360]];
 
     imagePoints = zeros(4,2);
     %sortedCorners = sortrows(corners,2);
@@ -28,7 +28,7 @@ function out = myInsertBannerInFrame(corners,frame1)
     imagePoints(2,:) = bannerLocationImage(2,:);
     imagePoints(3,:) = bannerLocationImage(3,:);         
     imagePoints(4,:) = bannerLocationImage(4,:);
-    
+    %imshow(imwarp(bannerIm,tformWorldToImage))
     tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
     
     imref = imref2d(size(frame1));
@@ -36,8 +36,8 @@ function out = myInsertBannerInFrame(corners,frame1)
     blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port'); 
     
     warpedImage2 = imwarp(bannerImGray, tformBannerToImage, 'Outputview',imref);
-    figure(100)
-    imshow(warpedImage2)
+    %figure(100)
+    %imshow(warpedImage2)
     %Merge images
     mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
     mergedImages = step(blender,rgb2gray(frame1), warpedImage2, mask);
