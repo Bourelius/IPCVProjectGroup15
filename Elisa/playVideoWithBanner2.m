@@ -16,7 +16,7 @@ frame = readFrame(vid);
 % corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
 % corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);
 %corners = [corners1; corners2; corners3];
-corners = myIntersectionFinder(frame);
+[corners, theta] = myIntersectionFinder(frame);
 
                                                 % find some initial points
 pointTracker = vision.PointTracker('MaxBidirectionalError',5);
@@ -44,7 +44,7 @@ while running
         
     end
     
-    out = myInsertBanner(points,frame);
+    out = myInsertBanner(points,frame, theta);
     %out = insertMarker(frame,points,'Color','red','Size',6);
     videoPlayer(out);      % Empty the memory buffer that stored acquired frames
     if vid.Currenttime == 15
