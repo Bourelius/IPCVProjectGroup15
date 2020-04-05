@@ -11,26 +11,18 @@ banner = imread('../UT_Logo_Black_EN.jpg');
 vid = VideoReader('../Videos/real_liverpool_1.mp4');
 output = VideoWriter('out.mp4','MPEG-4');
 videoPlayer = vision.VideoPlayer();
-vid.CurrentTime = 4;
+vid.CurrentTime = 1;
 
 %% Loop through video
 
 while hasFrame(vid)
    frame1 = readFrame(vid);
-   
-    lab_frame = rgb2lab(frame1);
-
-    ab = lab_frame(:,:,2:3);
-    ab = im2single(ab);
-    nColors = 5;
-    % repeat the clustering 3 times to avoid local minima
-    pixel_labels = imsegkmeans(ab,nColors,'NumAttempts',3);
-
-    % dominant segment = largest segment = cluster1
-    mask1 = pixel_labels==1;
-    frame = frame1 .* uint8(mask1);
+   frame = myColourFilter(frame1);
    
    frame = rgb2gray(frame);
+%    BW = roicolor(frame, 10,110);
+%    frame = frame .* uint8(~BW);
+   figure(1); imshow(frame,[]);
    frame = frame > 130;
    %figure(); imshow(frame,[]);
 
@@ -49,7 +41,7 @@ while hasFrame(vid)
     lines2 = houghlines(im,T2,R2,P2,'FillGap', 20, 'MinLength',220);
     [a,i]=unique([lines2.theta]','rows');
     lines2=lines2(i);
-    figure(1);imshow(im), hold on
+    figure(2);imshow(im), hold on
     %lines3=[lines2(1);lines2(7);lines2(8)];
     %lines3=lines3';
     max_len = 0;
@@ -98,4 +90,5 @@ while hasFrame(vid)
     figure(10)
     imshow(out)
  break  
-end
+
+ end

@@ -47,7 +47,9 @@ function out = myInsertBanner(corners,frame1, theta)
     mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
     maskShadow = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformShadow,'OutputView',imref);
     maskShadow = not(maskShadow);
-    background = rgb2gray(frame1) .* uint8(maskShadow);
+    M = ones(size(maskShadow));
+    M(maskShadow==0) = 0.3;
+    background = rgb2gray(frame1) .* uint8(M);
     mergedImages = step(blender,background, warpedImage2, mask);
     out = mergedImages;
 end
