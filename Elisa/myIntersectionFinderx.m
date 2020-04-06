@@ -1,4 +1,4 @@
-function [corners, theta] = myIntersectionFinder(frame1)
+function [corners, theta] = myIntersectionFinderx(frame1)
 
     lab_frame = rgb2lab(frame1);
 

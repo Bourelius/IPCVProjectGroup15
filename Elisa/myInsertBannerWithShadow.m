@@ -1,4 +1,4 @@
-function out = myInsertBanner(corners,frame1, theta)
+function out = myInsertBannerWithShadow(corners,frame1, theta)
     bannerIm = imread('..\UT_Logo_Black_EN.jpg');
     bannerImGray = rgb2gray(bannerIm);
     worldPoints = [0, 0;

@@ -17,7 +17,7 @@ vid.CurrentTime = 1;
 
 while hasFrame(vid)
    frame1 = readFrame(vid);
-   frame = myColourFilter(frame1);
+   frame = myROISelector(frame1);
    
    frame = rgb2gray(frame);
 %    BW = roicolor(frame, 10,110);
@@ -80,7 +80,7 @@ while hasFrame(vid)
     end
     sorted=sortrows(ints,2);
     corners=[sorted(1,:);sorted(2,:);sorted(4,:);sorted(5,:)];
-    out=myInsertBanner(corners,frame1, lines(1).theta);
+    out=myInsertBannerWithShadows(corners,frame1, lines(1).theta);
         bannerPoints = [0,0;
                     0,size(banner,2)
                     size(banner,1),0;

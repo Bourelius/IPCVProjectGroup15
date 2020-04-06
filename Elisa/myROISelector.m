@@ -1,4 +1,4 @@
-function [cluster1] = myColourFilter(frame)
+function [cluster1] = myROISelector(frame)
 %COLOUR_FILTER Function to get most dominant colour segment
 %   using L*a*b 
     I = rgb2hsv(frame);
