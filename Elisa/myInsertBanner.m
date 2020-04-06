@@ -1,4 +1,4 @@
-function out = myInsertBannerWithShadow(corners,frame1, theta)
+function out = myInsertBanner(corners,frame1, theta)
     bannerIm = imread('..\UT_Logo_Black_EN.jpg');
     bannerImGray = rgb2gray(bannerIm);
     worldPoints = [0, 0;
@@ -29,6 +29,7 @@ function out = myInsertBannerWithShadow(corners,frame1, theta)
     imagePoints(2,:) = bannerLocationImage(2,:);
     imagePoints(3,:) = bannerLocationImage(3,:);         
     imagePoints(4,:) = bannerLocationImage(4,:);
+    
     %P1 and P3 are the points that have to be recalculated for 60°
     imagePoints(1,:) = myAnglePointCalculator(theta, imagePoints(2,:), imagePoints(1,:));
     imagePoints(3,:) = myAnglePointCalculator(theta, imagePoints(4,:), imagePoints(3,:));

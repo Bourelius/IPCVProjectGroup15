@@ -1,11 +1,12 @@
 clear all;
 close all;
 
-vid = VideoReader('..\Videos\real_liverpool_1.mp4');
+vid = VideoReader('..\Videos\india_bangladesh_1.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 %% initialize
 vid.CurrentTime = 2;                                   % Starts capturing video
 frame = readFrame(vid);
+frame = myROISelector(frame);
 % framegray = rgb2gray(frame);
 % frameThresholded = framegray > 130;
 % framegray = double(frameThresholded);
