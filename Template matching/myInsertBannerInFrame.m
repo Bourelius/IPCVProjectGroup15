@@ -58,6 +58,11 @@ function out = myInsertBannerInFrame(corners,frame1,validity)
     imagePoints(3,:) = bannerLocationImage(3,:);         
     imagePoints(4,:) = bannerLocationImage(4,:);
     
+    imagePoints(1,1) = imagePoints(2,1)-40;
+    imagePoints(3,1)=imagePoints(4,1)-40;
+    imagePoints(1,2) = imagePoints(1,2) - 100;
+    imagePoints(3,2) = imagePoints(3,2) - 100;
+    
     tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
     
     imref = imref2d(size(frame1));

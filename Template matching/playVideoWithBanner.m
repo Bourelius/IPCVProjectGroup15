@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-vid = VideoReader('..\video4.mp4');
+vid = VideoReader('..\Videos\video4.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100,100,1020,680],'Name','Point tracker');
 %% initialize
 vid.CurrentTime = 7;                                   % Starts capturing video
