@@ -1,4 +1,4 @@
-function out = myIntersectionFinder(frame1)
+function [out,theta] = myIntersectionFinder(frame1)
 
     lab_frame = rgb2lab(frame1);
 
@@ -81,5 +81,6 @@ function out = myIntersectionFinder(frame1)
     sorted=sortrows(ints,2);
     corners=[sorted(1,:);sorted(2,:);sorted(3,:);sorted(4,:)];
     out = corners;
+    theta = lines(1).theta;
     %out = sorted;
 end

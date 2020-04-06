@@ -2,7 +2,7 @@
 clear all;
 close all;
 
-vid = VideoReader('..\Videos\real_liverpool_1.mp4');
+vid = VideoReader('..\Videos\real_liverpool_2.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 %% initialize
 vid.CurrentTime = 1;                                   % Starts capturing video
@@ -11,7 +11,7 @@ frame = readFrame(vid);
 % frameThresholded = framegray > 130;
 % framegray = double(frameThresholded);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
-corners = myIntersectionFinder(frame);
+[corners,theta] = myIntersectionFinder(frame);
 blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port'); 
 [mergedImages,mask,warpedBanner,bannerCornerPoints] = myInsertBanner(corners,frame,blender,bannerIm);
 % imshow(mergedImages,[]);
@@ -33,7 +33,7 @@ while running
 %         corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
 %         corners3 = myTemplateMatcher(frame,oppositeCornerTemplate);
 %         corners = [corners1; corners2; corners3];
-        corners = myIntersectionFinder(frame);
+        [corners,theta] = myIntersectionFinder(frame);
         setPoints(pointTracker,corners); % set new points
         %out = myInsertBannerInFrame(corners,frame,validity);
     else
@@ -41,8 +41,8 @@ while running
         
     end
     
-    %out = myMoveBanner2(corners,trackedPoints,frame,bannerIm,blender);
-    out = myMoveBanner(bannerCornerPoints,trackedPoints,frame,bannerIm,blender);
+    out = myMoveBanner2(corners,trackedPoints,frame,bannerIm,blender,theta);
+    %out = myMoveBanner(bannerCornerPoints,trackedPoints,frame,bannerIm,blender);
 %     imshow(out,[]);
     %out = insertMarker(frame,points,'Color','red','Size',6);
     videoPlayer(out);      % Empty the memory buffer that stored acquired frames
