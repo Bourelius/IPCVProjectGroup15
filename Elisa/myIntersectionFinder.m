@@ -6,12 +6,12 @@ function [corners, theta] = myIntersectionFinder(frame)
     
     % line detection
     im=frame;
-    [H2,T2,R2] = hough(edge(im, 'canny'), 'Theta', -79:1:-60);
+    [H2,T2,R2] = hough(im, 'Theta', -79:1:-60);
     P2  = houghpeaks(H2,3,'threshold',ceil(0.2*max(H2(:))),'NHoodSize',[101 3]);
     lines2 = houghlines(im,T2,R2,P2,'FillGap',50, 'MinLength',100);
     [~,i]=unique([lines2.theta]','rows');
     lines2=lines2(i);
-    %figure(5);imshow(im), hold on
+    figure(5);imshow(im), hold on
 
     temp_c=0;
     for k = 1:length(lines2)
