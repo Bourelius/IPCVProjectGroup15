@@ -1,11 +1,11 @@
-
 clear all;
 close all;
 
-vid = VideoReader('..\Videos\real_liverpool_2.mp4');
+vid = VideoReader('..\Videos\real_liverpool_1.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 %% initialize
-vid.CurrentTime = 1;                                   % Starts capturing video
+vid.CurrentTime = 1;
+i = 1;% Starts capturing video
 frame = readFrame(vid);
 % framegray = rgb2gray(frame);
 % frameThresholded = framegray > 130;
@@ -13,7 +13,7 @@ frame = readFrame(vid);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
 [corners,theta] = myIntersectionFinder(frame);
 blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port'); 
-[mergedImages,mask,warpedBanner,bannerCornerPoints] = myInsertBanner(corners,frame,blender,bannerIm);
+% [mergedImages,mask,warpedBanner,bannerCornerPoints] = myInsertBanner(corners,frame,blender,bannerIm);
 % imshow(mergedImages,[]);
                                                 % find some initial points
 pointTracker = vision.PointTracker('MaxBidirectionalError',10,'BlockSize',[51 51]);
@@ -52,3 +52,4 @@ while running
 end
 
 delete(vid);
+    i=i+1;
