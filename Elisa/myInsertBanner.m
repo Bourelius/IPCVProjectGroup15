@@ -42,6 +42,8 @@ function out = myInsertBanner(corners,frame1, theta)
     blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port'); 
     
     warpedImage2 = imwarp(bannerIm, tformBannerToImage, 'Outputview',imref);
+    h = fspecial('gaussian', 3, 3);
+    warpedImage2 = imfilter(warpedImage2, h, 'replicate');
 %     figure(100)
 %     imshow(warpedImage2)
     %Merge images with shadow
@@ -50,7 +52,7 @@ function out = myInsertBanner(corners,frame1, theta)
     maskShadow = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformShadow,'OutputView',imref);
     maskShadow = not(maskShadow);
     M = ones(size(maskShadow));
-    M(maskShadow==0) = 0.5;
+    M(maskShadow==0) = 0.7;
     background(:,:,1) = double(frame1(:,:,1)) .* M;
     background(:,:,2) = double(frame1(:,:,2)) .* M;
     background(:,:,3) = double(frame1(:,:,3)) .* M;
