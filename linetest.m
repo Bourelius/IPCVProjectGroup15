@@ -1,12 +1,15 @@
 clear all;
 
-vid = VideoReader('clip.mp4');
+vid = VideoReader('video4.mp4');
 
 videoPlayer = vision.VideoPlayer('Position',[100,100,680,520],'Name','Point tracker');
 %% enter the loop
-vid.CurrentTime = 300;
-frame = readFrame(vid);
-imwrite(frame,'frame.tif');
+vid.CurrentTime = 5;                                 
+frame1 = readFrame(vid);
+frame1 = rgb2gray(frame1);
+cornerCrossingTemplate = imread('C:\Users\Gebruiker\git\IPCV\IPCVProjectGroup15\Template matching\cropedLineCrossing');
+% cornerTemplate = imread('cropedCorner.png');
+% oppositeCornerTemplate = imread('oppositeCorner.png');
 
 im = im2double(imread('frame.tif'));
 im = rgb2gray(im);
@@ -15,7 +18,9 @@ imshow(im,[],'InitialMagnification',200);
 
 %% enhance lines
 
-line_enhanced = fibermetric(im,2);
+
+line_enhanced = fibermetric(frame1,2);
+corners = myTempelateMatcher(line_enhanced,cornerCrossingTemplelate);
 
 % show
 figure(2);
