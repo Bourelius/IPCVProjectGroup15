@@ -1,13 +1,7 @@
-function out = myMoveBanner2(corners,trackedPoints,frame,bannerIm,blender,theta)
+function out = myMoveBanner2(corners,trackedPoints,frame,bannerIm,blender,theta,imref)
 %Edvin Bourelus
 %2020-04-06
-%newbannercorners is two of the trackedPoints
-%oldBannerCorners is two from the warpedBanner
     bannerImGray = rgb2gray(bannerIm);
-    bannerImCorners = [0,0;
-                    0,size(bannerIm,1)
-                    size(bannerIm,2),0;
-                    size(bannerIm,2),size(bannerIm,1)];
                 
     %oldBannerCorners = [corners(2,:);corners(4,:)];
     oldBannerCorners = [corners(1,:);corners(3,:)];
@@ -24,39 +18,26 @@ function out = myMoveBanner2(corners,trackedPoints,frame,bannerIm,blender,theta)
                0, 360;
                550, 0;
                550, 360];
-    bannerPoints = [0,0;
+    bannerImCorners = [0,0;
                     0,size(bannerIm,1)
                     size(bannerIm,2),0;
                     size(bannerIm,2),size(bannerIm,1)];
-    bannerLocationWorld = [550, -200;
-               550, 0;
-               1000, -200;
-               1000, 0];
+    bannerLocationWorld = [550, -250;
+               550, -150;
+               1000, -250;
+               1000, -150];
     
     tformWorldToImage = estimateGeometricTransform(worldPoints,newCorners,'projective');
     bannerLocationImage = transformPointsForward(tformWorldToImage,bannerLocationWorld);
+    
     shadowLocationImage = bannerLocationImage;
+    tformShadow = estimateGeometricTransform(bannerImCorners,shadowLocationImage,'projective');
+    
     bannerLocationImage(1,:) = myAnglePointCalculator(theta, bannerLocationImage(2,:), bannerLocationImage(1,:));
-    bannerLocationImage(3,:) = myAnglePointCalculator(theta, bannerLocationImage(4,:), bannerLocationImage(3,:));
-    
-%     tformBannerToImage = estimateGeometricTransform(bannerPoints,bannerLocationImage,'projective');
-%     
-%     imref = imref2d(size(frame));
-%     
-%     warpedBanner = imwarp(bannerImGray, tformBannerToImage, 'Outputview',imref);
-% %     figure(100)
-% %     imshow(warpedImage2)
-%     %Merge images
-%     mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
-%     mergedImages = step(blender,rgb2gray(frame), warpedBanner, mask);
-%     out = mergedImages;
-%     
+    bannerLocationImage(3,:) = myAnglePointCalculator(theta-10, bannerLocationImage(4,:), bannerLocationImage(3,:));     
       
-    tformBannerToImage = estimateGeometricTransform(bannerPoints,bannerLocationImage,'projective');
-    tformShadow = estimateGeometricTransform(bannerPoints,shadowLocationImage,'projective');
+    tformBannerToImage = estimateGeometricTransform(bannerImCorners,bannerLocationImage,'projective');
     
-    imref = imref2d(size(frame));
-   
     warpedBanner = imwarp(bannerImGray, tformBannerToImage, 'Outputview',imref);
 
     mask = imwarp(true(size(bannerImGray,1),size(bannerImGray,2)),tformBannerToImage,'OutputView',imref);
