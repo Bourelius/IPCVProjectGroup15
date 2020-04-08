@@ -1,10 +1,10 @@
 function [corners, theta] = myIntersectionFinder(frame,side)
 
     frame = rgb2gray(frame);
-    %frame = localcontrast(frame);
+    frame = localcontrast(frame);
     
     % line detection
-    im= frame > 150;
+    im = frame > 150;
     figure(4);imshow(im), hold on
     
     theta={[-75:1:-61;75:1:89];[65:1:79;-84:1:-70]};
@@ -34,7 +34,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     end
     temp_b=(1080-temp_c)/temp_m;
     temp_c1=temp_m*1920+temp_c;
-    im=frame>130;
+    im=frame>120;
     if side ==1
         im=rgb2gray(insertShape(mat2gray(im),'FilledPolygon',[0 0 0 temp_c temp_b 1080 1920 1080 1920 0],'color','black','opacity',1))>0;
     else

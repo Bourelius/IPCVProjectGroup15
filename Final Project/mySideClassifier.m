@@ -1,6 +1,6 @@
 function [side] = mySideClassifier(frame)
 %MYSIDECLASSIFIER detects which side of the football field is viewed
-%   Detailed explanation goes here
+%   based on number of non black pixels left or right
 
     n_c = size(frame,2);
     left = frame(:, 1:n_c/2);

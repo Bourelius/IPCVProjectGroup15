@@ -1,6 +1,7 @@
 function [cluster] = myROISelector(frame)
-%COLOUR_FILTER Function to get most dominant colour segment
-%   using L*a*b 
+%MYROISELECTOR Function to get most dominant colour segment
+%   using L*a*b and HSV colour space
+
     I = rgb2hsv(frame);
     % Define thresholds for 'Hue'. Modify these values to filter out different range of colors.
     channel1Min = 0.110;
