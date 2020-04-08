@@ -94,12 +94,13 @@ bannerLocationImage = transformPointsForward(tformWorldToImage,bannerLocationWor
 
 
 %%
-[bannerIm,map,alpha] = imread('C:\Users\Gebruiker\Pictures\banner00.jpg');
+[bannerIm,map,alpha] = imread('C:\Users\Gebruiker\Pictures\selfie.jpg');
 bannerImGray = rgb2gray(bannerIm);
 bannerPoints = [1299,0;
                     1299,178
                     0,0;
                     0,178];
+% selfiePoints = [3456,0; 3456,4608; 0,0 ; 0 4608];
 
 imagePoints = zeros(4,2);
 corners = cornersframe1;
