@@ -4,10 +4,10 @@ close all;
 banner = imread('../UT_Logo_Black_EN.jpg');
 
 %% Read the video
-vid = VideoReader('../Videos/real_liverpool_1.mp4');
+vid = VideoReader('../Videos/india_bangladesh_1.mp4');
 output = VideoWriter('out.mp4','MPEG-4');
 videoPlayer = vision.VideoPlayer();
-vid.CurrentTime = 1;
+vid.CurrentTime = 3;
 
 %% Loop through video
 
