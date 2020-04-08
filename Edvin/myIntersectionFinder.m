@@ -6,13 +6,14 @@ function [out,theta] = myIntersectionFinder(frame1)
     ab = im2single(ab);
     nColors = 5;
     % repeat the clustering 3 times to avoid local minima
-    pixel_labels = imsegkmeans(ab,nColors,'NumAttempts',3);
+
+    pixel_labels = imsegkmeans(ab,nColors,'NumAttempts',4);
     
     % dominant segment = largest segment = cluster1
     mask1 = pixel_labels==pixel_labels(1000,1500);
     frame = frame1 .* uint8(mask1);
     frame = rgb2gray(frame);
-    frame = frame > 130;
+    frame = frame > 140;
     %figure(); imshow(frame,[]);
 
     %    sigma = 3;
@@ -24,8 +25,8 @@ function [out,theta] = myIntersectionFinder(frame1)
     %im=imreconstruct(adapthisteq(rgb2gray(frame))>170,rgb2gray(frame)>130);
     im=frame;
     [H2,T2,R2] = hough(im, 'Theta', -85:1:-70);
-    P2  = houghpeaks(H2,3,'threshold',ceil(0.2*max(H2(:))),'NHoodSize',[101 3]);
-    lines2 = houghlines(im,T2,R2,P2,'FillGap',50, 'MinLength',100);
+    P2  = houghpeaks(H2,3,'threshold',ceil(0.5*max(H2(:))),'NHoodSize',[101 3]);
+    lines2 = houghlines(im,T2,R2,P2,'FillGap',50, 'MinLength',200);
     [~,i]=unique([lines2.theta]','rows');
     lines2=lines2(i);
 %     figure(1);imshow(im), hold on
@@ -38,7 +39,8 @@ function [out,theta] = myIntersectionFinder(frame1)
         m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));             
         c=xy(2,2)-m*xy(2,1);             
 
-%         plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','blue')
+        %plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','blue')
+
         if temp_c==0
             temp_c=c;
             temp_m=m;
@@ -54,7 +56,7 @@ function [out,theta] = myIntersectionFinder(frame1)
     [H,T,R] = hough(im, 'Theta', 75:1:89);
 
     P  = houghpeaks(H,10,'threshold',ceil(0.3*max(H(:))),'NHoodSize',[101 3]);
-    lines = houghlines(im,T,R,P, 'MinLength',50);
+    lines = houghlines(im,T,R,P, 'MinLength',100);
     temp=100*[lines.rho]+[lines.theta];
     [~,i1]=unique(temp','rows');
     lines=lines(i1);
@@ -65,7 +67,9 @@ function [out,theta] = myIntersectionFinder(frame1)
 
         m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));             
         c=xy(2,2)-m*xy(2,1);             
-%         plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
+
+        %plot([-c/m,(1080-c)/m],[0,1080],'LineWidth',1,'Color','red')
+
     end
     
 
@@ -81,12 +85,14 @@ function [out,theta] = myIntersectionFinder(frame1)
         c2=lin2(2,2)-m2*lin2(2,1);
         x=(c2-c1)/(m1-m2);
         y=m1*x+c1;
+
         if (x > 0) && (y > 0)
             ints(i,:)=[x,y];
         else 
             ints(i,:)=[10000,10000];
         end
 %         plot(x,y, 'x', 'MarkerSize', 10, 'LineWidth', 2,'Color','yellow');
+
         i=i+1;
     end
     end

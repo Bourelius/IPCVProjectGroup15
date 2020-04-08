@@ -17,13 +17,13 @@ imref = imref2d(size(frame));
 % [mergedImages,mask,warpedBanner,bannerCornerPoints] = myInsertBanner(corners,frame,blender,bannerIm);
 % imshow(mergedImages,[]);
                                                 % find some initial points
-pointTracker = vision.PointTracker('MaxBidirectionalError',10,'BlockSize',[31 31]);
+pointTracker = vision.PointTracker('MaxBidirectionalError',10,'BlockSize',[41 41]);
                                                 % create a point tracker
 initialize(pointTracker,corners,frame);% initialize with the initial frame
 
 %% enter the loop
 running = true;
-while running
+while hasFrame(vid)
     frame = readFrame(vid);
 %     framegray = rgb2gray(frame);
 %     frameThresholded = framegray > 130;
@@ -48,4 +48,5 @@ while running
 end
 
 delete(vid);
-    i=i+1;
+ i=i+1;
+
