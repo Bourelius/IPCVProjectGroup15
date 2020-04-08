@@ -1,7 +1,7 @@
 function [corners, theta] = myIntersectionFinder(frame,side)
 
     frame = rgb2gray(frame);
-    frame = localcontrast(frame);
+    %frame = localcontrast(frame);
     
     % line detection
     im= frame > 150;
@@ -50,7 +50,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     
     for k = 1:length(lines)
         xy = [lines(k).point1; lines(k).point2];
-        plot(xy(:,1),xy(:,2),'LineWidth',5,'Color','green');
+        %plot(xy(:,1),xy(:,2),'LineWidth',5,'Color','green');
 
         m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));             
         c=xy(2,2)-m*xy(2,1);             
