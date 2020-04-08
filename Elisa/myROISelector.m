@@ -1,4 +1,4 @@
-function [cluster1] = myROISelector(frame)
+function [cluster] = myROISelector(frame)
 %COLOUR_FILTER Function to get most dominant colour segment
 %   using L*a*b 
     I = rgb2hsv(frame);
@@ -30,6 +30,19 @@ function [cluster1] = myROISelector(frame)
 
     % dominant segment = largest segment = cluster1
     mask1 = pixel_labels==1;
-    cluster1 = frame .* uint8(mask1);
+
+    mask2 = pixel_labels==2;
+    mask3 = pixel_labels==3;
+    
+    if sum(mask1(:)) > sum(mask2(:)) && sum(mask1(:)) > sum(mask3(:))
+        final_mask = mask1;
+    elseif sum(mask2(:)) > sum(mask1(:)) && sum(mask2(:)) > sum(mask3(:))  
+        final_mask = mask2;
+    elseif sum(mask3(:)) > sum(mask1(:)) && sum(mask3(:)) > sum(mask2(:))
+        final_mask = mask3;
+    end
+    
+    cluster = frame .* uint8(final_mask);
+
 end
 
