@@ -19,7 +19,7 @@ function [cluster1] = myROISelector(frame)
     maskedRGBimage = frame;
     % Set background pixels where BW is false to zero.
     maskedRGBimage(repmat(BW,[1 1 3])) = 0;
-    
+
     lab_frame = rgb2lab(maskedRGBimage);
     
     ab = lab_frame(:,:,2:3);
@@ -31,6 +31,5 @@ function [cluster1] = myROISelector(frame)
     % dominant segment = largest segment = cluster1
     mask1 = pixel_labels==1;
     cluster1 = frame .* uint8(mask1);
-
 end
 

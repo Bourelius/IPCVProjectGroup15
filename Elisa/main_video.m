@@ -1,8 +1,7 @@
-clear all;
 close all;
 
-vid = VideoReader('..\Videos\india_bangladesh_1.mp4');
-videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
+vid = VideoReader('..\Videos\real_liverpool_1.mp4');
+videoPlayer = vision.VideoPlayer();
 %% initialize
 vid.CurrentTime = 2;                                   % Starts capturing video
 frame = readFrame(vid);
@@ -25,13 +24,14 @@ pointTracker = vision.PointTracker('MaxBidirectionalError',5);
 initialize(pointTracker,corners,frame);% initialize with the initial frame
 
 %% enter the loop
-running = true;
+i=1;
 while running
-    frame = readFrame(vid);
+    frame = read(vid,i);
 %     framegray = rgb2gray(frame);
 %     frameThresholded = framegray > 130;
 %     framegray = double(frameThresholded);
     [points,validity] = pointTracker(frame); % read new frame
+    sum(validity)
     if sum(validity)<3                      % if too many points are lost
 %         corners1 = myTemplateMatcher(frame,cornerTemplate);
 %         corners2 = myTemplateMatcher(frame,cornerCrossingTemplate);
@@ -51,6 +51,7 @@ while running
     if vid.Currenttime == 15
          running = false;
     end
+i=i+1;
 end
 
 delete(vid);

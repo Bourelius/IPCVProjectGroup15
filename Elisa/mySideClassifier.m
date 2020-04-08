@@ -7,9 +7,9 @@ function [side] = mySideClassifier(frame)
     right = frame(:, n_c/2+1:n_c+1);
 
     if sum(left(:)~= 0) > sum(right(:) ~= 0)
-        side = "right";
+        side = 1;
     else
-        side = "left";
+        side = 2;
     end
 end
 

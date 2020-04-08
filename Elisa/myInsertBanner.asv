@@ -10,22 +10,27 @@ function out = myInsertBanner(corners,frame1, theta,side)
     else
         bannerPoints = [size(bannerIm,2),0; size(bannerIm,2),size(bannerIm,1);0,0; 0,size(bannerIm,1)];
     end
-
-    imagePoints = corners;
+    imagePoints = zeros(4,2);
+    %sortedCorners = sortrows(corners,2);
+    imagePoints(1,:) = corners(1,:);
+    imagePoints(2,:) = corners(2,:);  
+    imagePoints(3,:) = corners(3,:);          
+    imagePoints(4,:) = corners(4,:);
     
     tformWorldToImage = estimateGeometricTransform(worldPoints,imagePoints,'projective');
     bannerLocationImage = transformPointsForward(tformWorldToImage,bannerLocationWorld);
     
-    imagePoints = bannerLocationImage;
-    
+    imagePoints(1,:) = bannerLocationImage(1,:);
+    imagePoints(2,:) = bannerLocationImage(2,:);
+    imagePoints(3,:) = bannerLocationImage(3,:);         
+    imagePoints(4,:) = bannerLocationImage(4,:);
+    if side==2
+        theta=9-theta;
+    end
     %P1 and P3 are the points that have to be recalculated for 60°
-    if side==1
-        imagePoints(1,:) = myAnglePointCalculatorRight(theta, imagePoints(2,:), imagePoints(1,:));
-        imagePoints(3,:) = myAnglePointCalculatorRight(theta, imagePoints(4,:), imagePoints(3,:));
-    else
-        imagePoints(1,:) = myAnglePointCalculatorLeft(theta, imagePoints(1,:), imagePoints(2,:));
-        imagePoints(3,:) = myAnglePointCalculatorLeft(theta, imagePoints(3,:), imagePoints(4,:));
-    end    
+    imagePoints(1,:) = myAnglePointCalculatorRight(theta, imagePoints(2,:), imagePoints(1,:));
+    imagePoints(3,:) = myAnglePointCalculatorRight(theta, imagePoints(4,:), imagePoints(3,:));
+    
     tformBannerToImage = estimateGeometricTransform(bannerPoints,imagePoints,'projective');
     tformShadow = estimateGeometricTransform(bannerPoints,bannerLocationImage,'projective');
     
