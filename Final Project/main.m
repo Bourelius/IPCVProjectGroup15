@@ -2,7 +2,7 @@ clear variables;
 close all;
 
 %% Open video and advertisement
-vid = VideoReader('..\Videos\video1.mp4');
+vid = VideoReader('..\Videos\real_liverpool_1.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
 output = VideoWriter('output2.mp4','MPEG-4');
@@ -14,7 +14,7 @@ frame = readFrame(vid); %first frame
 
 %% ROI detection
 frame_roi = myROISelector(frame);
-
+figure(1); imshow(frame_roi);
 %% Side classification
 side = mySideClassifier(frame_roi); %1 is right, 2 is left
 

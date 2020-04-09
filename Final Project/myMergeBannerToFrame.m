@@ -1,8 +1,6 @@
 function out = myMergeBannerToFrame(corners,trackedPoints,frame,bannerIm,blender,theta,imref, side)
 %MYMERGEBANNERTOFRAME Merge the banner in the right geometric transform to
 %current frame with shadow
-    
-    %bannerImGray = rgb2gray(bannerIm);
                 
     oldBannerCorners = [corners(1,:);corners(3,:)];
     newBannerCorners = [trackedPoints(1,:);trackedPoints(3,:)];
