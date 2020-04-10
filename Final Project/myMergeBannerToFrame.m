@@ -9,18 +9,18 @@ function out = myMergeBannerToFrame(corners,trackedPoints,frame,bannerIm,blender
     newCorners = transformPointsForward(tformOldToNew,corners);
     
     worldPoints = [0, 0;
-               0, 360;
-               550, 0;
-               550, 360];
+               0, 550;
+               2484, 0;
+               2484, 550];
     if side==1
         bannerImCorners = [0,0; 0,size(bannerIm,1); size(bannerIm,2),0; size(bannerIm,2),size(bannerIm,1)];
     else
         bannerImCorners = [size(bannerIm,2),0; size(bannerIm,2),size(bannerIm,1);0,0; 0,size(bannerIm,1)];
     end
-    bannerLocationWorld = [550, -250;
-               550, -150;
-               1000, -250;
-               1000, -150];
+    bannerLocationWorld = [1500, -350;
+               1500, -150;
+               2500, -350;
+               2500, -150];
     
     tformWorldToImage = estimateGeometricTransform(worldPoints,newCorners,'projective');
     bannerLocationImage = transformPointsForward(tformWorldToImage,bannerLocationWorld);
