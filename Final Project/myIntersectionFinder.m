@@ -1,14 +1,14 @@
 function [corners, theta] = myIntersectionFinder(frame,side)
 
-    frame = rgb2gray(frame);
-    %frame=frame(:,:,3);
-    frame = localcontrast(frame);
-    
+    %frame_hsv = rgb2hsv(frame);
+    %im=frame_hsv(:,:,3)>0.6 & frame_hsv(:,:,2)<0.5;
+    frame_hsl=rgb2hsl(rescale(frame));
+    %frame = localcontrast(frame);
     % line detection
-    im = frame >150;
+    im = frame_hsl(:,:,3)>0.4;
     figure(4);imshow(im), hold on
     
-    theta={[-75:1:-61;75:1:89];[65:1:79;-84:1:-70]};
+    theta={[-75:1:-61;70:1:84];[65:1:79;-89:1:-75]};
     [H2,T2,R2] = hough(edge(im,'approxcanny'), 'Theta', theta{side}(1,:));
     P2  = houghpeaks(H2,3,'threshold',ceil(0.3*max(H2(:))),'NHoodSize',[101 3]);
     lines2 = houghlines(im,T2,R2,P2,'FillGap',50, 'MinLength',100);
@@ -35,15 +35,15 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     end
     temp_b=(1080-temp_c)/temp_m;
     temp_c1=temp_m*1920+temp_c;
-    im=frame>130;
+
     if side ==1
         im=rgb2gray(insertShape(mat2gray(im),'FilledPolygon',[0 0 0 temp_c temp_b 1080 1920 1080 1920 0],'color','black','opacity',1))>0;
     else
         im=rgb2gray(insertShape(mat2gray(im),'FilledPolygon',[0 0 0 temp_c 1920 temp_c1 1920 0],'color','black','opacity',1))>0;    
     end
 
-    [H,T,R] = hough(edge(im,'canny'), 'Theta', theta{side}(2,:));
-    P  = houghpeaks(H,10,'threshold',ceil(0.4*max(H(:))),'NHoodSize',[101 7]);
+    [H,T,R] = hough(im, 'Theta', theta{side}(2,:));
+    P  = houghpeaks(H,20,'threshold',ceil(0.4*max(H(:))),'NHoodSize',[101 7]);
     lines = houghlines(im,T,R,P, 'Fillgap',80,'MinLength',100);
     temp=100*[lines.rho]+[lines.theta];
     [~,i1]=unique(temp','rows');
@@ -51,7 +51,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     
     for k = 1:length(lines)
         xy = [lines(k).point1; lines(k).point2];
-        %plot(xy(:,1),xy(:,2),'LineWidth',5,'Color','green');
+        plot(xy(:,1),xy(:,2),'LineWidth',5,'Color','green');
 
         m=(xy(2,2)-xy(1,2))/(xy(2,1)-xy(1,1));             
         c=xy(2,2)-m*xy(2,1);             
