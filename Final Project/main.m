@@ -45,6 +45,7 @@ while hasFrame(vid)
          running = false;
     end
     writeVideo(output, out);
+break
 end
 close(output);
 delete(vid);

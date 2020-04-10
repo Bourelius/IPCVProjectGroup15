@@ -1,10 +1,11 @@
 function [corners, theta] = myIntersectionFinder(frame,side)
 
     frame = rgb2gray(frame);
+    %frame=frame(:,:,3);
     frame = localcontrast(frame);
     
     % line detection
-    im = frame > 150;
+    im = frame >150;
     figure(4);imshow(im), hold on
     
     theta={[-75:1:-61;75:1:89];[65:1:79;-84:1:-70]};
@@ -42,7 +43,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     end
 
     [H,T,R] = hough(edge(im,'canny'), 'Theta', theta{side}(2,:));
-    P  = houghpeaks(H,10,'threshold',ceil(0.5*max(H(:))),'NHoodSize',[101 7]);
+    P  = houghpeaks(H,10,'threshold',ceil(0.4*max(H(:))),'NHoodSize',[101 7]);
     lines = houghlines(im,T,R,P, 'Fillgap',80,'MinLength',100);
     temp=100*[lines.rho]+[lines.theta];
     [~,i1]=unique(temp','rows');
