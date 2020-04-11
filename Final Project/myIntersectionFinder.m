@@ -42,7 +42,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
         im=rgb2gray(insertShape(mat2gray(im),'FilledPolygon',[0 0 0 temp_c 1920 temp_c1 1920 0],'color','black','opacity',1))>0;    
     end
 
-    [H,T,R] = hough(im, 'Theta', theta{side}(2,:));
+    [H,T,R] = hough(edge(im, 'canny'), 'Theta', theta{side}(2,:));
     P  = houghpeaks(H,20,'threshold',ceil(0.4*max(H(:))),'NHoodSize',[101 7]);
     lines = houghlines(im,T,R,P, 'Fillgap',80,'MinLength',100);
     temp=100*[lines.rho]+[lines.theta];
