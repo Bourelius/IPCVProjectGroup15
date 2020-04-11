@@ -3,13 +3,13 @@ close all;
 
 %% Open video and advertisement
 
-vid = VideoReader('..\Videos\video1.mp4');
+vid = VideoReader('..\Videos\.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
-output = VideoWriter('output2.mp4','MPEG-4');
+output = VideoWriter('virtual_ad_3.mp4','MPEG-4');
 
 %% Initialize video capturing
-vid.CurrentTime = 0;
+vid.CurrentTime = 1;
 i = 0;% Starts capturing video
 frame = readFrame(vid); %first frame
 
@@ -46,7 +46,7 @@ while hasFrame(vid)
          running = false;
     end
     writeVideo(output, out);
-
+break
 end
 close(output);
 delete(vid);
