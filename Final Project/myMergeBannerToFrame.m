@@ -39,7 +39,7 @@ function out = myMergeBannerToFrame(corners,trackedPoints,frame,bannerIm,blender
     tformBannerToImage = estimateGeometricTransform(bannerImCorners,bannerLocationImage,'projective');
     
     warpedBanner = imwarp(bannerIm, tformBannerToImage, 'Outputview',imref);
-    h = fspecial('gaussian', 3, 3);
+    h = fspecial('gaussian',2,1);
     warpedBanner = imfilter(warpedBanner, h, 'replicate');
     
     mask = imwarp(true(size(bannerIm,1),size(bannerIm,2)),tformBannerToImage,'OutputView',imref);

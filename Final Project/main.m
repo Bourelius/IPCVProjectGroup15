@@ -6,7 +6,7 @@ close all;
 vid = VideoReader('..\Videos\video3.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
-%output = VideoWriter('virtual_ad_2.mp4','MPEG-4');
+output = VideoWriter('virtual_ad_4.mp4','MPEG-4');
 
 %% Initialize video capturing
 vid.CurrentTime = 0;
@@ -28,7 +28,7 @@ initialize(pointTracker,corners,frame);% initialize with the initial frame
 
 %% Looping through the video
 running = true;
-%open(output);
+open(output);
 while hasFrame(vid)
    frame = readFrame(vid);
    [trackedPoints,validity] = pointTracker(frame); % read new frame
@@ -40,12 +40,12 @@ while hasFrame(vid)
    end
 
     out = myMergeBannerToFrame(corners,trackedPoints,frame,bannerIm,blender,theta,imref, side);
-    %videoPlayer(out);      % Empty the memory buffer that stored acquired frames
+    videoPlayer(out);      % Empty the memory buffer that stored acquired frames
     if vid.Currenttime == 15
          running = false;
     end
-    %writeVideo(output, out);
-break
+    writeVideo(output, out);
+
 end
-%close(output);
+close(output);
 
