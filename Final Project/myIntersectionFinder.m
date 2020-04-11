@@ -6,7 +6,9 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     %frame = localcontrast(frame);
     % line detection
     im = frame_hsl(:,:,3)>0.4;
-    figure(4);imshow(im), hold on
+    figure;imshow(im), hold on
+
+
     
     theta={[-75:1:-61;75:1:89];[65:1:79;-89:1:-75]};
     [H2,T2,R2] = hough(edge(im,'approxcanny'), 'Theta', theta{side}(1,:));
@@ -42,7 +44,7 @@ function [corners, theta] = myIntersectionFinder(frame,side)
         im=rgb2gray(insertShape(mat2gray(im),'FilledPolygon',[0 0 0 temp_c 1920 temp_c1 1920 0],'color','black','opacity',1))>0;    
     end
 
-    [H,T,R] = hough(edge(im, 'canny'), 'Theta', theta{side}(2,:));
+    [H,T,R] = hough(im, 'Theta', theta{side}(2,:));
     P  = houghpeaks(H,20,'threshold',ceil(0.4*max(H(:))),'NHoodSize',[101 7]);
     lines = houghlines(im,T,R,P, 'Fillgap',80,'MinLength',100);
     temp=100*[lines.rho]+[lines.theta];
@@ -83,5 +85,5 @@ function [corners, theta] = myIntersectionFinder(frame,side)
     %corners=sorted;
     corners=[sorted(1,:);sorted(2,:);sorted(4,:);sorted(5,:)];
     theta = lines(1).theta;
-
+   
 end
