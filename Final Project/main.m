@@ -9,7 +9,7 @@ bannerIm = imread('..\UT_Logo_Black_EN.jpg');
 output = VideoWriter('output2.mp4','MPEG-4');
 
 %% Initialize video capturing
-vid.CurrentTime = 5;
+vid.CurrentTime = 0;
 i = 0;% Starts capturing video
 frame = readFrame(vid); %first frame
 
@@ -46,7 +46,7 @@ while hasFrame(vid)
          running = false;
     end
     writeVideo(output, out);
-break
+
 end
 close(output);
 delete(vid);
