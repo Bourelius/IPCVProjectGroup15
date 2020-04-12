@@ -3,7 +3,7 @@ close all;
 
 %% Open video and advertisement
 
-vid = VideoReader('..\Videos\video3.mp4');
+vid = VideoReader('..\Videos\video_1.mp4');
 videoPlayer = vision.VideoPlayer('Position',[100 100 1080 680]);
 bannerIm = imread('..\UT_Logo_Black_EN.jpg');
 output = VideoWriter('virtual_ad_4.mp4','MPEG-4');
